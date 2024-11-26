@@ -1,0 +1,13 @@
+#game-container {
+    max-width: 50%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+}
+
+.cell {
+    border: dotted 2px blue;
+    font-size: 3rem;
+    aspect-ratio: 1;
+    text-align: center;
+}

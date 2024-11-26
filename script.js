@@ -2,10 +2,15 @@
 const gameboard = (function () {
     const board = [];
     
+    const gameContainer = document.getElementById("game-container")
     for (let i = 0; i < 3; i++) {
         board[i] = [];
         for (let j = 0; j < 3; j++) {
             board[i].push(Cell());
+            const gameDiv = document.createElement("div");
+            gameDiv.classList.add("cell");
+            gameDiv.textContent = "_";
+            gameContainer.appendChild(gameDiv);
         }
     }
 
