@@ -1,27 +1,38 @@
 
 const gameboard = (function () {
     const board = [];
-    
-    const gameContainer = document.getElementById("game-container")
-    for (let i = 0; i < 3; i++) {
-        board[i] = [];
-        for (let j = 0; j < 3; j++) {
-            board[i].push(Cell());
-            const gameDiv = document.createElement("div");
-            gameDiv.classList.add("cell");
-            gameDiv.textContent = "_";
-            gameContainer.appendChild(gameDiv);
+    const container = document.getElementById("container");
+
+    /*const gameContainer = document.getElementById("game-container");*/
+    const drawBoard = () => {
+        const gameContainer = document.createElement("div");
+        gameContainer.id = ("game-container");
+        container.appendChild(gameContainer);
+
+        for (let i = 0; i < 3; i++) {
+            board[i] = [];
+            for (let j = 0; j < 3; j++) {
+                let newCell = Cell();
+                board[i].push(newCell);
+
+                const gameDiv = document.createElement("div");
+                gameDiv.classList.add("cell");
+                gameDiv.textContent = newCell.getValue();
+                newCell.setId(i, j);
+
+                gameDiv.addEventListener("click", (e) => {
+                    let coords = newCell.getId();
+                    playMove(coords[0], coords[1]);
+                    gameDiv.textContent = newCell.getValue();
+                });
+
+                gameContainer.appendChild(gameDiv);
+            }
         }
     }
 
     /* Gives the entire board, made of Cell objects */
     const getBoard = () => board;
-
-    /* Draw the actual board with only the value for each cell */
-    const drawBoard = () => {
-        const boardWithCells = board.map(row => row.map(cell => cell.getValue()));
-        return console.log(boardWithCells);
-    }
 
     const playMove = (coordX, coordY) => {
         let token = gameManager.getActivePlayer().token;
@@ -30,9 +41,6 @@ const gameboard = (function () {
             gameManager.increaseNumberOfMoves();
             checkWin();
             gameManager.changePlayerTurn();
-            drawBoard();
-        } else {
-            console.log("This cell is already in play");
         }
     }
 
@@ -52,6 +60,8 @@ const gameboard = (function () {
             const currentSymbol = board[a[0]][a[1]].getValue();
             if (currentSymbol !== "_") {
                 if (board[b[0]][b[1]].getValue() === currentSymbol && board[c[0]][c[1]].getValue() === currentSymbol) {
+                    container.removeChild(document.getElementById("game-container"));
+                    drawBoard();
                     return console.log(`Victory! The winner is: ${gameManager.getPlayerName(currentSymbol)}`);
                 }
             }
@@ -77,14 +87,20 @@ function createPlayer (name, token) {
 
 function Cell() {
     let value = "_";
+    let id = [];
 
     const getValue = () => value;
+    const getId = () => id;
+
+    const setId = (coordX, coordY) => {
+        id = [coordX, coordY];
+    }
 
     const modifyCell = (token) => {
         value = token;
     }
 
-    return { getValue, modifyCell };
+    return { getValue, getId, setId, modifyCell };
 }
 
 const gameManager = (function () {
@@ -108,8 +124,3 @@ const gameManager = (function () {
 })();
 
 gameboard.drawBoard();
-gameboard.playMove(0, 0);
-gameboard.playMove(0, 1);
-gameboard.playMove(1, 0);
-gameboard.playMove(2, 2);
-gameboard.playMove(2, 0);
