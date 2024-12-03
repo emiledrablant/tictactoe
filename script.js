@@ -67,9 +67,9 @@ const gameboard = (function () {
             }
         }
         if (gameManager.getNumberOfMoves() >= 9) {
-            return console.log("It's a tie.");
+            stateDisplayer.textContent = "It's a tie.";
         } else {
-            return console.log("No win yet. The game goes on.");
+            stateDisplayer.textContent = `No win yet. The game goes on. Next move: ${gameManager.getActivePlayer().name}`;
         }
     }
 
@@ -123,4 +123,6 @@ const gameManager = (function () {
     return { changePlayerTurn, getActivePlayer, getPlayerName, increaseNumberOfMoves, getNumberOfMoves };
 })();
 
+const stateDisplayer = document.getElementById("state-displayer");
+stateDisplayer.textContent = `Starting player is: ${gameManager.getActivePlayer().name}`;
 gameboard.drawBoard();

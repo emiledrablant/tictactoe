@@ -1,5 +1,5 @@
 #game-container {
-    max-width: 50%;
+    max-width: 30%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 5px;
@@ -9,5 +9,7 @@
     border: dotted 2px blue;
     font-size: 3rem;
     aspect-ratio: 1;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
